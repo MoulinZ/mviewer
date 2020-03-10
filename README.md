@@ -268,6 +268,8 @@ Nœud regroupant les couches par thèmes et sous-thèmes.
 
 * **mini**: Booléen qui précise si le panneau de gauche est réduit à l'ouverture de l'application. Défaut = false.
 
+* **legendMini**: Booleén qui précise si le panneau de la légende est réduit à l'ouverture de l'application. Défaut = true.
+
 ### Nœud(s) enfant(s) theme
 
 Nœud enfant décrivant un thème
