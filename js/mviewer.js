@@ -784,7 +784,7 @@ mviewer = (function () {
             htmlListGroup += _renderHTMLFromTemplate(mviewer.templates.theme, view);
         });
         var panelMini = configuration.getConfiguration().themes.mini;
-        var legendMini = configuration.getConfiguration().themes.legendMini;
+        var legendMini = configuration.getConfiguration().themes.legendmini;
         // first init for menu. Display panels by default.
         initMenu();
         if (panelMini && (panelMini === 'true')) {
