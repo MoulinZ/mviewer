@@ -785,8 +785,6 @@ mviewer = (function () {
         });
         var panelMini = configuration.getConfiguration().themes.mini;
         var legendMini = configuration.getConfiguration().themes.legendmini;
-        // first init for menu. Display panels by default.
-        initMenu();
         if (panelMini && (panelMini === 'true')) {
             // hide layers panel
             mviewer.toggleMenu(false);
@@ -797,6 +795,7 @@ mviewer = (function () {
             mviewer.toggleLegend(false);
         }
         $("#menu").html(htmlListGroup);
+        initMenu();
         // Open theme item if set to collapsed=false
         if (configuration.getConfiguration().themes.theme !== undefined) {
             var expanded_theme = $.grep(configuration.getConfiguration().themes.theme, function(obj){return obj.collapsed === "false";});
