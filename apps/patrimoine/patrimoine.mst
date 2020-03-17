@@ -1,0 +1,421 @@
+{{#features}}
+<script type="text/javascript">
+
+//Fonction effectuée en cliquant sur le bouton validation du formulaire.
+//Elle permet de récupérer les infos, de vérifier si elles sont conformes,
+//et renvoi un message d'erreur dans le cas contraire.
+function validateForm{{ident}}( event ) {
+  $("#erreurNom{{ident}}").hide();
+  //chacune de ces lignes permet de masquer le message d'erreur au moment
+  //de la validation du formulaire.
+  $("#erreurEmail{{ident}}").hide();
+  $("#erreurValiditeEmail{{ident}}").hide();
+  $("#erreurType{{ident}}").hide();
+  $("#erreurMessage{{ident}}").hide();
+  $("#erreurCoord{{ident}}").hide();
+  event.preventDefault();
+  var nom =  document.getElementById('formNom{{ident}}').value;
+  console.log(nom);
+
+  //Ici on récupère la valeur entrée dans le formulaire (ici le nom)
+  if (nom == "") {
+      $("#erreurNom{{ident}}").show();
+      //On vérifie ensuite qu'il n'est pas vide. S'il l'est on renvoi
+      //un message d'erreur...
+      return false;
+      //...et on stop la fonction de validation du formulaire.
+      //Les mêmes vérifications sont effectuées pour chacun des champs.
+  }
+  var email =  document.getElementById('formEmail{{ident}}').value;
+  if (email == "") {
+
+      $("#erreurEmail{{ident}}").show();
+      return false;
+  } else {
+      var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      if(!re.test(email)){
+          $("#erreurValiditeEmail{{ident}}").show();
+          return false;
+          //Une vérification supplémentaire pour l'e-mail est effectuée
+          //pour voir s'il est bien valide.
+      }
+  }
+  var erreur =  document.getElementById('typeErreur{{ident}}').value;
+  if (erreur == "") {
+      $("#erreurType{{ident}}").show();
+      return false;
+  }
+
+  var message =  document.getElementById('formMessage{{ident}}').value;
+  if (message == "") {
+      $("#erreurMessage{{ident}}").show();
+      return false;
+  }
+  var id =  document.getElementById('formId{{ident}}').value;
+  //L'identifiant étant récupéré directement dans les attributs de chaque
+  //site et l'utilisateur n'ayant pas la possibilité de le changer, on
+  //n'éffectue pas de vérification.
+
+  var long =  document.getElementById('long{{ident}}').value;
+  var lati =  document.getElementById('lati{{ident}}').value;
+  if (erreur == "Positionnement" && long == "") {
+      $("#erreurCoord{{ident}}").show();
+      return false;
+      //Pour les coordonnées, on vérifie qu'elles existent si et seulement
+      //si le type d'erreur sélectionné est positionnement. Et l'on part
+      //du principe que si "long" existe, "lati" existe forcément.
+  }
+
+  formData = {
+  'formNom'  : nom,
+  'formEmail'    : email,
+  'typeErreur'  : erreur,
+  'formMessage'  : message,
+  'formId' : id,
+  'long' : long,
+  'lati' : lati
+  };
+//les données sont enregistrées dans un dictionnaire, et envoyées vers le PHP,
+//qui, après vérification de son côté, renvoi un message d'erreur ou de succès "text(data.message)"
+//ajax permet de ne pas recharger la page à l'envoi du formulaire.
+
+  $.ajax({
+  url : "/mviewer/apps/patrimoine/mail.php",
+  type: "POST",
+  data : formData,
+  success: function(data, textStatus, jqXHR)
+  {
+  if(data.code)
+  $("#erreurForm{{ident}}").text(data.message);
+  $("#erreurForm{{ident}}").show();
+  },
+  error: function (jqXHR, textStatus, errorThrown)
+  {
+  $("#erreurForm{{ident}}").text("erreur envoie mail");
+  }
+  });
+}
+
+//La fonction suivante permet l'affichage d'un modal (popup au milieu de l'écran)
+//pour la déclaration d'erreur. Elle renvoi virtuellement la div du modal dans
+//l'index.html, puis lance le modal
+function modalStep(id) {
+  var modalErreur = document.getElementById(id);
+  document.body.appendChild(modalErreur);
+  $("#"+id).modal('toggle');
+  console.log({{ident}});
+
+}
+
+//on prépare des variables pour la carte d'erreur de positionnement
+var mapy{{ident}}a = 'mapy{{ident}}';
+var mapy{{ident}} = null;
+
+document.getElementById("mapy{{ident}}").style.cursor = "crosshair";
+//cette ligne permet de modifier l'aspect du curseur quand il passe sur la carte
+
+$(function () {
+  $("#typeErreur{{ident}}").change(function() {
+    var val = $(this).val();
+    console.log({{ident}});
+    if(val === "Positionnement") {
+        $("#ajoutImage{{ident}}").hide();
+        $("#choixCoord{{ident}}").show();
+        //on affiche la possibilité de définir de nouvelles coordonnées uniquement
+        //si le type d'erreur "Positionnement" est sélectionné.
+
+        if (mapy{{ident}} == null) {
+
+        var pos = ol.proj.fromLonLat([{{x}}, {{y}}]);
+        //On récupère les positions du site sur lequel on a cliqué pour centrer
+        //la carte dessus et créer l'étiquette
+
+        mapy{{ident}}  = new ol.Map({
+              target: mapy{{ident}}a,
+              layers: [
+                new ol.layer.Tile(
+                {
+                    source: new ol.source.OSM({})
+                })
+              ],
+              view: new ol.View({
+                center: pos,
+                zoom: 12
+              })
+            });
+        //On crée une carte openlayer avec un fond OSM
+
+        var popup_ancien = new ol.Overlay({
+            element: document.getElementById('popup_ancien')
+        });
+        //On définit la variable qui va acceuillir l'étiquette de la position
+        //actuelle du point et on le relie à la div qui correspond
+
+        mapy{{ident}}.once('postrender', function(event) {
+          //Cette fonction, générée une fois, produit le popup...
+          popup_ancien.setPosition(pos);
+          //...défini sa position...
+          var element_ancien = popup_ancien.getElement();
+          $(element_ancien).popover({
+               placement: 'top',
+               animation: false,
+               html: true,
+               content: '<p id="monPopup1{{ident}}">Ancien emplacement</p>'
+             });
+          mapy{{ident}}.addOverlay(popup_ancien);
+          //...ajoute la couche à la carte...
+          $(element_ancien).popover('show');
+          //...et le popup dessus..
+          var monPopupAncien = $('#monPopup1{{ident}}').parent().parent();
+          //...récupère la div autocréée qui correspond au popup...
+          monPopupAncien[0].classList.add('PopupClassAncien');
+          //...afin d'y associer une classe pour le custom css
+        });
+
+        //Et c'est la même chose pour le popup du nouvel emplacement défini par l'utilisateur
+        //à peu de chose près...
+        var popup = new ol.Overlay({
+            element: document.getElementById('popup')
+        });
+        mapy{{ident}}.addOverlay(popup);
+
+        mapy{{ident}}.on('click', event => {
+          //...le popup apparait au click
+          var coordWGS84 = ol.proj.transform([event.coordinate[0], event.coordinate[1]], 'EPSG:3857', 'EPSG:4326');
+          document.getElementById("long{{ident}}").value = coordWGS84[0];
+          document.getElementById("lati{{ident}}").value = coordWGS84[1];
+          //On attribut les Longitudes et Latitudes aux champs spécifiés lorque
+          //l'on clique sur la carte, en les transformant en WGS84
+          var element = popup.getElement();
+          var coordinate = event.coordinate;
+          $(element).popover('destroy');
+          //...le précédent popup est détruit au nouveau click
+          popup.setPosition(coordinate);
+          $(element).popover({
+            placement: 'top',
+            animation: false,
+            html: true,
+            content: '<p id="monPopup2{{ident}}">Nouvel emplacement</p>'
+          });
+          $(element).popover('show');
+          var monPopupNouveau = $('#monPopup2{{ident}}').parent().parent();
+          monPopupNouveau[0].classList.add('PopupClassNouveau');
+        });
+
+        }
+    }
+    else if (val === "Photo") {
+        $("#ajoutImage{{ident}}").show();
+        $("#choixCoord{{ident}}").hide();
+
+    }
+    else {
+        $("#ajoutImage{{ident}}").hide();
+        $("#choixCoord{{ident}}").hide();
+        //Si le type d'erreur n'est pas "Positionnement" on n'affiche rien
+    }
+  });
+});
+</script>
+<li class="item">
+    <h3 class="titre">{{titre}}</h3>
+    <p class="text-feature">
+        {{#date}}
+        <div class="feature-text"><strong>Date</strong> : {{date}}</div>
+        {{/date}}
+        <!-- le {{#item}} {{/item}} permet de n'afficher la div que s'il n'est
+        pas vide. le {{item}} permet de récupérer la valeur propre au site
+        sélectionné-->
+        {{#spatial_cov}}
+        <div class="feature-text"><strong>Lieu</strong> : {{spatial_cov}}</div>
+        {{/spatial_cov}}
+        {{#alt_title}}
+        <div class="feature-text"><strong>Titre alternatif</strong> : {{alt_title}}</div>
+        {{/alt_title}}
+    </p>
+    <hr />
+    <p>
+        {{#descriptio}}
+        <div class="feature-text"><strong>Description</strong> : {{descriptio}}</div>
+        {{/descriptio}}
+        {{#createur}}
+        <div class="feature-text"><strong>Créateur</strong> : {{createur}}</div>
+        {{/createur}}
+        {{#droits}}
+        <div class="feature-text"><strong>Droits</strong> : {{droits}}</div>
+        {{/droits}}
+        {{#propriete}}
+        <div class="feature-text"><strong>Propriété</strong> : {{propriete}}</div>
+        {{/propriete}}
+        {{#temp_cov}}
+        <div class="feature-text"><strong>Historique</strong> : {{temp_cov}}</div>
+        {{/temp_cov}}
+    {{#photo1}}
+    </p>
+    <hr />
+        <div class="item">
+            <img src="{{photos}}" alt="Photo" width=100%>
+        </div>
+    {{/photo1}}
+
+    <hr />
+    <p class="text-center">
+        <a target="_blank" class="btn btn-primary" href="{{lien_fiche}}">Fiche <img src="apps/patrimoine/img/logo_m3c_simple.png" alt="logo" width=30px> <br> (+ de photos)</a>
+        <!-- Bouton bootstrap (ici pour aller sur la fiche du site sur le site de la M3C)-->
+    </p>
+    <hr />
+
+    <p class="text-center">
+        <button id="btn1" type="button" class="btn btn-warning" data-toggle="modal" onClick="modalStep('formulaireErreur{{ident}}')">
+            <span class="fas fa-wrench"></span> Signaler une erreur
+        </button>
+        <!-- Bouton bootstrap qui renvoi vers la fonction js modalStep avec pour id 'formulaireErreur{{ident}}' -->
+    </p>
+</li>
+
+<!-- Ensuite est décrit le formulaire d'erreur, qui est un modal bootstrap -->
+<div id="formulaireErreur{{ident}}" class="modal fade" tabindex="-1" role="dialog"  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form id="formulaire{{ident}}" name="erreur-form" onsubmit="validateForm{{ident}}(event);" method="POST">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title w-100 font-weight-bold" id="modalTitle">Signalement d'une erreur</h4>
+        <br>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-success" role="alert" id="erreurForm{{ident}}" hidden>
+        </div>
+        <!-- les div d'alerte sont invisibles au départ (hidden) mais sont affichés en fonction des erreurs ou
+        des succès de l'envoie du formulaire.
+        Cette alerte n'a pas de texte puisqu'il est renvoyé par PHP.
+        Les suivantes ont chacune leur texte spécifique -->
+
+        <!-- Nom -->
+        <div class="form-group">
+            <label for="formNom{{ident}}"><span class="fas fa-child"></span> Nom </label>
+            <input type="text" id="formNom{{ident}}" name="formNom" class="form-control" placeholder="Nom">
+        </div>
+        <div class="alert alert-danger" role="alert" id="erreurNom{{ident}}" hidden>
+          Vous devez entrer un nom
+        </div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <label for="formEmail{{ident}}"> <span class="fas fa-at"></span> E-mail </label>
+            <input type="email" id="formEmail{{ident}}" name="formEmail" class="form-control rounded" placeholder="E-mail">
+        </div>
+        <div class="alert alert-danger" role="alert" id="erreurEmail{{ident}}" hidden>
+          Vous devez entrer un e-mail
+        </div>
+        <div class="alert alert-danger" role="alert" id="erreurValiditeEmail{{ident}}" hidden>
+          Cet e-mail n'est pas valide
+        </div>
+
+        <!-- Id site -->
+        <div class="form-group">
+            <label for="formId{{ident}}"><span class="fas fa-landmark"></span> Identifiant du site </label>
+            <input type="text" id="formId{{ident}}" name="formId" class="form-control" value="{{ident}}"  readonly>
+        </div>
+
+        <!-- Type d'erreur -->
+        <div class="form-group">
+            <label for="typeErreur{{ident}}"><span class="fas fa-wrench"></span> Type d'erreur </label>
+            <select id="typeErreur{{ident}}" name="typeErreur" class="form-control">
+                <option value="" selected disabled>Choisissez une option</option>
+                <option value="Positionnement">Positionnement</option>
+                <option value="Contenu de la fiche">Contenu de la fiche</option>
+                <option value="Photo">Photo</option>
+                <option value="Autre - Commentaire">Autre - Commentaire</option>
+            </select>
+        </div>
+        <div class="alert alert-danger" role="alert" id="erreurType{{ident}}" hidden>
+          Vous devez sélectionner un type d'erreur
+        </div>
+        <div id="choixCoord{{ident}}" hidden>
+          <label for=blabla style="text-align: justify;"> <span class="glyphicon glyphicon-map-marker"></span> Cliquez sur la carte pour définir les nouvelles coordonnées du site</label>
+          <div class=row>
+            <div class="col-md-6 mb-3">
+              <label for="lati{{ident}}"> Latitude </label>
+              <input type="text" id="lati{{ident}}" name="lati" class="form-control" value="" readonly>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="long{{ident}}"> Longitude </label>
+              <input type="text" id="long{{ident}}" name="long" class="form-control" value="" readonly>
+            </div>
+          </div>
+          <br>
+          <div class="mapy" id="mapy{{ident}}" ></div>
+          <div style="display: none;">
+            <div id="popup_ancien"></div>
+            <div id="popup"></div>
+          </div>
+          <br>
+          <div class="alert alert-danger" role="alert" id="erreurCoord{{ident}}" hidden>
+            Vous devez cliquer sur la carte pour définir la position du site
+          </div>
+        </div>
+        <div id="ajoutImage{{ident}}" class="form-group custom-file" hidden>
+          <label for="photo"> Joignez une photo du site si vous le souhaitez </label>
+          <input type="file" class="custom-file-input" id="photo">
+        </div>
+        <!-- Message -->
+        <div class="form-group">
+            <label for="formMessage{{ident}}"><span class="fas fa-pen"></span> Message </label>
+            <textarea class="form-control" id="formMessage{{ident}}" name="formMessage" rows="3" placeholder="Message" ></textarea>
+        </div>
+        <div class="alert alert-danger" role="alert" id="erreurMessage{{ident}}" hidden>
+          Décrivez ici l'erreur, la source...
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div form-group>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+          <button id="envoi{{ident}}" type="submit" class="btn btn-success"><span class="glyphicon glyphicon-send"></span>  Envoyer</button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{{/features}}
+
+<style>
+    .titre {
+        text-transform: capitalize;
+    }
+    #formEmail{{ident}}, #formId{{ident}}, #formMessage{{ident}}, #formNom{{ident}}, #typeErreur{{ident}} {
+    border-radius: 5px;
+    }
+    #mapy {
+      height: 400px;
+      width: 100%;
+    }
+    #modalTitle {
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .modal-header {
+      background-color: #EEB043;
+    }
+    .PopupClassAncien {
+      background-color: #EEB043 !important;
+    }
+    .PopupClassAncien .arrow:after {
+      border-top-color: #EEB043 !important;
+    }
+    .PopupClassNouveau {
+      background-color: #26A848 !important;
+    }
+    .PopupClassNouveau .arrow:after {
+      border-top-color: #26A848 !important;
+    }
+    .popover-content {
+      color: #FFFFFF;
+      text-align: center;
+      min-width: 160px;
+      max-height: 40px;
+    }
+
+
+</style>

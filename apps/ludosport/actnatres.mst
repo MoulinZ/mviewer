@@ -1,0 +1,83 @@
+{{#features}}
+<li class="item" style="padding-bottom:65px;">
+  <div class="title-feature" style="padding-top:10px;font-size:x-large;font-weight:bold;">{{equnm}}</div>
+  <br>
+  <br>
+      <table class="table">
+      <tbody>
+      <tr>
+        <td class="categorie">Libellé de l'activité</td>
+      </tr>
+      <tr>
+        <td class="contenu">{{actlb}}</td>
+      </tr>
+      <tr>
+        <td class="categorie">Libellé du type d'équipement</td>
+      </tr>
+      <tr>
+        <td class="contenu">{{eqptl}}</td>
+      </tr>
+      <tr>
+        <td class="categorie">Classe de l'équipement</td>
+      </tr>
+      <tr>
+        <td class="contenu">{{grdeqptl}}</td>
+      </tr>
+      <tr>
+        <td class="categorie">Source</td>
+      </tr>
+      <tr>
+        <td class="contenu">{{source}}</td>
+      </tr>
+    </tbody>
+    </table>
+</li>
+
+<script>
+var color_aerien = "255,127,0";
+var color_nautique = "31,120,180";
+var color_cyclo = "51,160,44";
+var color_marche = "179,99,23";
+var color_equestre = "196,77,185";
+var color_nature = "179,179,179";
+
+if ("{{grdeqptl}}".trim() == "Activités aériennes") {
+  $('.categorie').css("background-color","rgb("+color_aerien+")");
+  $('.contenu').css("background-color","rgba("+color_aerien+",0.6)");
+  $('.title-feature').css("color","rgb("+color_aerien+")");
+} else if ("{{grdeqptl}}".trim() == "Activités aquatiques et nautiques") {
+  $('.categorie').css("background-color","rgb("+color_nautique+")");
+  $('.contenu').css("background-color","rgba("+color_nautique+",0.6)");
+  $('.title-feature').css("color","rgb("+color_nautique+")");
+} else if ("{{grdeqptl}}".trim() == "Activités cyclotourisme") {
+  $('.categorie').css("background-color","rgb("+color_cyclo+")");
+  $('.contenu').css("background-color","rgba("+color_cyclo+",0.6)");
+  $('.title-feature').css("color","rgb("+color_cyclo+")");
+} else if ("{{grdeqptl}}".trim() == "Activités pédestres") {
+  $('.categorie').css("background-color","rgb("+color_marche+")");
+  $('.contenu').css("background-color","rgba("+color_marche+",0.6)");
+  $('.title-feature').css("color","rgb("+color_marche+")");
+} else if ("{{grdeqptl}}".trim() == "Activités équestres") {
+  $('.categorie').css("background-color","rgb("+color_equestre+")");
+  $('.contenu').css("background-color","rgba("+color_equestre+",0.6)");
+  $('.title-feature').css("color","rgb("+color_equestre+")");
+} else if ("{{grdeqptl}}".trim() == "Sports de nature (divers)") {
+  $('.categorie').css("background-color","rgb("+color_nature+")");
+  $('.contenu').css("background-color","rgba("+color_nature+",0.6)");
+  $('.title-feature').css("color","rgb("+color_nature+")");
+};
+</script>
+
+<style>
+
+  .categorie {
+    text-align: center;
+    color: white;
+    font-weight: bold;
+  }
+  .contenu {
+    color: white;
+  }
+</style>
+
+{{/features}}

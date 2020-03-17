@@ -1,0 +1,62 @@
+<config>
+    <application title="Inventaire préliminaire du patrimoine bâti de la Corse 2013" logo="apps/img/locus3.png" help="apps/patrimoine/patrimoine_help.html" showhelp="false" style="css/themes/nephritis.css" exportpng="false" measuretools="false" />
+    <mapoptions maxzoom="20" projection="EPSG:3857" center="980260.26771016,5158732.7815574128" zoom="12" />
+    <searchparameters localities="false" features="true" bbox="false"/>
+    <elasticsearch url="http://ows.region-bretagne.fr/kartenn/_search" geometryfield="geometry" querymode="match" linkid="search_id" version="1.4"/>
+    <baselayers style="gallery">
+        <baselayer  visible="true" type="OSM" id="positron" label="Positron" title="CartoDb" thumbgallery="img/basemap/positron.png"
+            url="http://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" maxzoom="20"
+            attribution="Map tiles by  &lt;a href='http://cartodb.com/attributions'>CartoDb &lt;/a>, under  &lt;a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0 &lt;/a>" />
+        <baselayer  visible="false" type="WMS" id="ortho2016_20cm" label="Photo aérienne 2016"   title="Ortho2016" thumbgallery="img/basemap/ortho.jpg"
+            url="http://193.48.28.84:8080/geoserver/raster/wms?"   layers="ortho2016_20cm" format="image/png" style="_null" matrixset="EPSG:3857" fromcapacity="false"
+            attribution="&lt;a href='http://193.48.28.84:8000/layers/ortho2016_20cm' target='_blank' >Collectivité de Corse - IGN RGE BD ORTHO &lt;/a>" />
+        <baselayer  type="OSM" id="osm1" label="OpenStreetMap" title="OpenSTreetMap" thumbgallery="img/basemap/osm.png"
+            url="http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="Données : les contributeurs d'&lt;a href='http://www.openstreetmap.org/' target='_blank'>OpenStreetMap &lt;/a>,  &lt;a href='http://www.openstreetmap.org/copyright' target='_blank'>ODbL &lt;/a>" visible="false"/>
+    </baselayers>
+    <searchparameters localities="true" features="false" bbox="true" querymaponclick="true" closeafterclick="true"/>
+    <olscompletion url="http://api-adresse.data.gouv.fr/search/" type="ban" attribution="La recherche d'adresse est un service proposé par l'API adresse.data.gouv.fr"/>
+    <themes mini="false">
+        <theme id="theme-20171106150925" name="Sites patrimoniaux" collapsed="true" icon="fas fa-landmark">
+            <layer id="patrimoine"
+                name="Inventaire du patrimoine"
+                visible="true"
+                type="customlayer"
+                expanded="true"
+                legendurl="apps/img/logo_m3c.png"
+                vectorlegend="false"
+                url="apps/patrimoine/customlayers/patrimoine.js"
+                customcontrol="true"
+                customcontrolpath="apps/patrimoine/customcontrols/"
+                attribution="M3C - Médiathèque culturelle de la Corse et des Corses &lt;a href='http://m3c.univ-corse.fr/'&gt;http://m3c.univ-corse.fr&lt;/a&gt;"
+                queryable="true"
+                fields="titre,categorie,alt_title,descriptio,spatial_cov,createur,date,date_debut,date_fin,droits,y,x,temp_cov,propriete,lien_fiche,photos,ident"
+                aliases="titre,categorie,titre alternatif, description, couverture spatiale, date, date de début,date de fin,droits,y,x,couverture temporelle,propriete,lien de la fiche M3C,photo,identifiant"
+                searchable="true"
+                searchengine="fuse"
+                fusesearchkeys="titre,createur"
+                fusesearchresult="{{date}} {{titre}} {{createur}} {{spatial_cov}}"
+                tooltipcontent="{{titre}} et {{mv_clustercount}} autre(s) site(s)">
+                <template url="apps/patrimoine/patrimoine.mst"/>
+            </layer>
+            <!--
+          <layer id="patrimoine_4326" name="Inventaire du patrimoine"  visible="true"  queryable="true"
+                      fields="titre,alt_title,descriptio,spatial_cov,createur,date,date_debut,date_fin,droits,Y,X,temp_cov,propriete,lien_fiche,photos,ident"
+                      aliases="titre,titre alternatif, description, couverture spatiale, date, date de début,date de fin,droits,Y,X,couverture temporelle,propriete,lien de la fiche M3C,photo,identifiant"
+                      infoformat="application/vnd.ogc.gml" type="customlayer" vectorlegend="true" featurecount="20" infopanel="right-panel"
+  	                  url="apps/patrimoine/customlayers/patrimoine_4326.js"
+                      customcontrol="true"
+                      customcontrolpath="apps/patrimoine/customcontrols/"
+                      expanded="true"
+  	                  attribution="UMR LISA"
+                      searchable="true"
+                      searchengine="fuse"
+                      fusesearchkeys="titre,createur"
+                      fusesearchresult="{{date}} {{titre}} {{createur}} {{spatial_cov}}"
+                      tooltipcontent="{{titre}} et {{mv_clustercount}} autre(s) site(s)">
+                      <template url="apps/patrimoine/patrimoine.mst"/>
+  		     </layer>
+         -->
+        </theme>
+    </themes>
+</config>

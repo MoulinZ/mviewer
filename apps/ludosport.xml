@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+    <application title="Activités ludiques dans les parcs marins" logo="apps/img/locus_blanc.png" help="mviewer_help.html" measuretools="true" exportpng="true" style="css/themes/blue.css" templaterightinfopanel="default"/>
+    <mapoptions maxzoom="19" projection="EPSG:3857" center="350750.13768758904,5904925.57790189" zoom="6" />
+    <baselayers style="default"><!-- style="default"||gallery" -->
+        <baselayer  type="OSM" id="darkmatter" label="Dark Matter" title="CartoDb" thumbgallery="img/basemap/darkmatter.png"
+            url="http://{a-c}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png" maxzoom="20"
+            visible="false" attribution="Map tiles by  &lt;a href='http://cartodb.com/attributions'>CartoDb &lt;/a>, under  &lt;a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0 &lt;/a>" />
+        <baselayer  type="OSM" id="positron" label="Positron" title="CartoDb" thumbgallery="img/basemap/positron.png"
+            url="http://{a-c}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png" maxzoom="20"
+            visible="true" attribution="Map tiles by  &lt;a href='http://cartodb.com/attributions'>CartoDb &lt;/a>, under  &lt;a href='http://creativecommons.org/licenses/by/3.0/'>CC BY 3.0 &lt;/a>" />
+        <baselayer  type="OSM" id="osm1" label="OpenStreetMap" title="OpenStreetMap" thumbgallery="img/basemap/osm.png"
+            url="http://{a-c}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            attribution="© MapQuest. Données : les contributeurs d'&lt;a href='http://www.openstreetmap.org/' target='_blank'>OpenStreetMap &lt;/a>,  &lt;a href='http://www.openstreetmap.org/copyright' target='_blank'>ODbL &lt;/a>" visible="false"/>
+    </baselayers>
+    <proxy url=""/>
+    <olscompletion url="http://api-adresse.data.gouv.fr/search/" type="ban"/>
+    <searchparameters localities="true" features="true" bbox="false"/>
+
+    <themes mini="false">
+      <theme name="Activités ludiques"  collapsed="true" id="photos" icon="fas fa-basketball-ball">
+        <layer id="actnatres" name="Activités ludiques"  visible="true"  queryable="true"
+                    fields="equnm,actlb,eqptl,source,grdeqptl"
+                    aliases="Nom de l'équipement,Libellé de l'activité,Libellé du type d'équipement,Source,Catégorie du type d'équipement"
+                    infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                    url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                    attribution="IGN"
+                    searchable="true"
+                    searchengine="fuse"
+                    fusesearchkeys="equnm"
+                    fusesearchresult="{{equnm}}">
+            <template url="apps/ludosport/actnatres.mst"></template>
+        </layer>
+      </theme>
+    	<theme name="Parcs marins"  collapsed="true" id="parc" icon="fas fa-fish">
+    		<layer id="sites_etude_rep_amp" name="Zones d'étude"  visible="true"  queryable="true"
+                    fields="nom,id,effectif_etatetabpu,effectif_collter,effectif_assosenv,effectif_usalois,effectif_persqual,effectif_orgreppro,effectif_autresespa,total,nom_complet"
+                    aliases="Nom,ID,Etat,Collectivité Territoriale,Associations environementales,Usagers,Personnes qualifiées,Organisations pro,Autres,Total,Nom"
+                    infoformat="application/vnd.ogc.gml" type="customlayer" vectorlegend="true" featurecount="20" infopanel="right-panel"
+	                  url="apps/ludosport/customlayers/sites_etude_rep_amp.js"
+                    customcontrol="true"
+                    customcontrolpath="apps/ludosport/customcontrols/"
+	                  attribution="UMR LISA"
+                    expanded="true"
+                    searchable="true"
+                    searchengine="fuse"
+                    fusesearchkeys="nom_complet"
+                    fusesearchresult="{{nom_complet}}">
+		            <template url="apps/ludosport/sites_etude_rep_amp.mst"></template>
+		        </layer>
+		</theme>
+    <theme name="Zones protégées"  collapsed="true" id="zones_protegees" icon="fab fa-envira">
+      <layer id="zonenv_rnr" name="Réserves Naturelles Régionales"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_apb" name="Arrêtés de Protection de Biotope"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_rnc" name="Réserves Naturelles de Corse"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_ospar" name="Zones marines protégées de la convention OSPAR"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_pnr" name="Parcs Naturels Régionnaux"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_cld" name="Terrains du Conservatoire du Littoral"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_ramsar" name="Zones humides protégées par la convention de RAMSAR"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_rnn" name="Réserves Naturelles Nationales"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_bios" name="Réserve de Biosphère"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_bpm" name="Biens du Patrimoine Mondial de l'UNESCO"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_znieff1" name="Zones Naturelles d'Intérêt Ecologique, Faunistique et Floristique de type 1"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_znieff2" name="Zones Naturelles d'Intérêt Ecologique, Faunistique et Floristique de type 2"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_znieff1_mer" name="Zones Naturelles d'Intérêt Ecologique, Faunistique et Floristique en mer de type 1"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_znieff2_mer" name="Zones Naturelles d'Intérêt Ecologique, Faunistique et Floristique en mer de type 2"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_sic" name="Sites d'Importance Communautaire"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_zps" name="Zones de Protection Spéciale"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_zico" name="Zones Importantes pour la Conservation des Oiseaux"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+      <layer id="zonenv_aspim" name="Aires Spécialement Protégées d'Importance Méditéranéenne"  visible="true"  queryable="true"
+                  fields="nom_site,url_fiche,date_crea,modif_adm"
+                  aliases="Nom du site,URL de la fiche,Date de création,Date de modification administrative"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="INPN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_site"
+                  fusesearchresult="{{nom_site}}">
+          <!--<template url="apps/ludosport/zonenv.mst"></template> -->
+      </layer>
+    </theme>
+    <theme name="Photos"  collapsed="true" id="photos" icon="fa fa-camera">
+    </theme>
+    <!-- <theme name="Administratif"  collapsed="true" id="administratif" icon="fas fa-city">
+      <layer id="comparcs" name="Communes des PNM"  visible="true"  queryable="true"
+                  fields="nom_com,population"
+                  aliases="Nom de la commune,Population de la commune"
+                  infoformat="application/vnd.ogc.gml" featurecount="20" infopanel="right-panel"
+                  url="http://193.48.28.84:8080/geoserver/applications/wms?"
+                  attribution="IGN"
+                  searchable="true"
+                  searchengine="fuse"
+                  fusesearchkeys="nom_com"
+                  fusesearchresult="{{nom_com}}">
+      </layer>
+    </theme> -->
+
+
+    </themes>
+</config>

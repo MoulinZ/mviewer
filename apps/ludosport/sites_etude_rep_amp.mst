@@ -1,0 +1,356 @@
+{{#features}}
+	<li class="item" style="padding-bottom:65px;">
+		<div class="title-feature" style="padding-top:10px;">{{nom_complet}}</div>
+		<div class="panel panel-default">
+            <div class="panel-body panel-graph" id="ludique">
+            	<img src="apps/ludosport/img/ludique.svg" style="width:30%;">
+            	<p style="margin:-5px 0px -5px 0px!important;">
+            		<span id="test" class="number" style="font-size:30px;"></span><span class="number" style="font-size:30px;">%</span>
+            	</p>
+            	<p class="title-number">Taux d'usagers de loisirs<br><span class="sub-number">dans les conseils</span></p>
+            </div>
+		</div>
+		<div class="panel panel-default">
+            <div class="panel-body panel-graph" id="meeting">
+            	<img src="apps/ludosport/img/meeting.svg" style="width:30%;">
+            	<p style="margin:-5px 0px -5px 0px!important;">
+                  <span class="number" style="font-size:30px;">{{total}}</span>
+            	</p>
+            	<p class="title-number">sièges<br><span class="sub-number">dans les conseils</span></p>
+            </div>
+		</div>
+		<div class="panel panel-default">
+            <div class="panel-body panel-graph">
+                <canvas class="chart1" id="chart1_{{id}}" ></canvas>
+            </div>
+    </div>
+		<div class="panel panel-default">
+		    <div class="panel-body panel-graph" id="podium">
+					<p class="podium"><b>Activités ludiques pratiquées</b></p>
+					<img class="act1" style="width:20%;position: absolute;z-index: 2;margin-left:34%;">
+					<img class="act2" style="width:20%;position: absolute;z-index: 2;margin-left:4%;margin-top:13%;">
+					<img class="act3" style="width:20%;position: absolute;z-index: 2;margin-left:64%;margin-top:23%;">
+					<img class="act4" style="width:20%;position: absolute;z-index: 2;margin-left:19%;margin-top:65%;">
+					<img class="act5" style="width:20%;position: absolute;z-index: 2;margin-left:50%;margin-top:70%;">
+		      <img src="apps/ludosport/img/podium.png" style="width:100%;z-index: 1;">
+
+		    </div>
+		</div>
+	</li>
+{{/features}}
+
+<style>
+	.title-feature, .indicateur {
+		color: #2d4059;
+		font-family:"roboto_black";
+		font-size:23px;
+		margin-bottom:3%;
+		line-height:1;
+	}
+	.indicateur {
+		text-align: center;
+	}
+	.panel-graph {
+	    text-align: center;
+	}
+	#ludique {
+		color: #008000;
+	}
+	#meeting {
+		color: #e74c3c;
+	}
+	.podium {
+		font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+		font-size:12;
+	}
+
+	.number {
+	    font-size: 40px;
+	    font-weight: 900;
+	}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels"></script>
+<script>
+	{{#features}}
+	var usalois = Mustache.render("{{effectif_usalois}}");
+	var total = Mustache.render("{{total}}");
+	var usalois_prct = usalois/total*100;
+	document.getElementById('test').innerHTML=usalois_prct.toFixed(2);
+	if ("{{act1}}".trim() == "surf") {
+		$('.act1').attr("src","apps/ludosport/img/sport_surf.png");
+	} else if ("{{act1}}".trim() == "plongée") {
+		$('.act1').attr("src","apps/ludosport/img/sport_plongee.png");
+	} else if ("{{act1}}".trim() == "planche à voile") {
+		$('.act1').attr("src","apps/ludosport/img/sport_plancheavoile.png");
+	} else if ("{{act1}}".trim() == "baignade") {
+		$('.act1').attr("src","apps/ludosport/img/sport_baignade.png");
+	} else if ("{{act1}}".trim() == "waveski") {
+		$('.act1').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act1}}".trim() == "kayak") {
+		$('.act1').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act1}}".trim() == "pêche") {
+		$('.act1').attr("src","apps/ludosport/img/sport_peche.png");
+	} else if ("{{act1}}".trim() == "randonnée") {
+		$('.act1').attr("src","apps/ludosport/img/sport_randonnee.png");
+	} else if ("{{act1}}".trim() == "promenade en bateau") {
+		$('.act1').attr("src","apps/ludosport/img/sport_promenadeenbateau.png");
+	} else if ("{{act1}}".trim() == "equitation") {
+		$('.act1').attr("src","apps/ludosport/img/sport_equitation.png");
+	} else if ("{{act1}}".trim() == "vtt") {
+		$('.act1').attr("src","apps/ludosport/img/sport_vtt.png");
+	};
+
+	if ("{{act2}}".trim() == "surf") {
+		$('.act2').attr("src","apps/ludosport/img/sport_surf.png");
+	} else if ("{{act2}}".trim() == "plongée") {
+		$('.act2').attr("src","apps/ludosport/img/sport_plongee.png");
+	} else if ("{{act2}}".trim() == "planche à voile") {
+		$('.act2').attr("src","apps/ludosport/img/sport_plancheavoile.png");
+	} else if ("{{act2}}".trim() == "baignade") {
+		$('.act2').attr("src","apps/ludosport/img/sport_baignade.png");
+	} else if ("{{act2}}".trim() == "waveski") {
+		$('.act2').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act2}}".trim() == "kayak") {
+		$('.act2').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act2}}".trim() == "pêche") {
+		$('.act2').attr("src","apps/ludosport/img/sport_peche.png");
+	} else if ("{{act2}}".trim() == "randonnée") {
+		$('.act2').attr("src","apps/ludosport/img/sport_randonnee.png");
+	} else if ("{{act2}}".trim() == "promenade en bateau") {
+		$('.act2').attr("src","apps/ludosport/img/sport_promenadeenbateau.png");
+	} else if ("{{act2}}".trim() == "equitation") {
+		$('.act2').attr("src","apps/ludosport/img/sport_equitation.png");
+	} else if ("{{act2}}".trim() == "vtt") {
+		$('.act2').attr("src","apps/ludosport/img/sport_vtt.png");
+	};
+
+	if ("{{act3}}".trim() == "surf") {
+		$('.act3').attr("src","apps/ludosport/img/sport_surf.png");
+	} else if ("{{act3}}".trim() == "plongée") {
+		$('.act3').attr("src","apps/ludosport/img/sport_plongee.png");
+	} else if ("{{act3}}".trim() == "planche à voile") {
+		$('.act3').attr("src","apps/ludosport/img/sport_plancheavoile.png");
+	} else if ("{{act3}}".trim() == "baignade") {
+		$('.act3').attr("src","apps/ludosport/img/sport_baignade.png");
+	} else if ("{{act3}}".trim() == "waveski") {
+		$('.act3').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act3}}".trim() == "kayak") {
+		$('.act3').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act3}}".trim() == "pêche") {
+		$('.act3').attr("src","apps/ludosport/img/sport_peche.png");
+	} else if ("{{act3}}".trim() == "randonnée") {
+		$('.act3').attr("src","apps/ludosport/img/sport_randonnee.png");
+	} else if ("{{act3}}".trim() == "promenade en bateau") {
+		$('.act3').attr("src","apps/ludosport/img/sport_promenadeenbateau.png");
+	} else if ("{{act3}}".trim() == "equitation") {
+		$('.act3').attr("src","apps/ludosport/img/sport_equitation.png");
+	} else if ("{{act3}}".trim() == "vtt") {
+		$('.act3').attr("src","apps/ludosport/img/sport_vtt.png");
+	};
+
+	if ("{{act4}}".trim() == "surf") {
+		$('.act4').attr("src","apps/ludosport/img/sport_surf.png");
+	} else if ("{{act4}}".trim() == "plongée") {
+		$('.act4').attr("src","apps/ludosport/img/sport_plongee.png");
+	} else if ("{{act4}}".trim() == "planche à voile") {
+		$('.act4').attr("src","apps/ludosport/img/sport_plancheavoile.png");
+	} else if ("{{act4}}".trim() == "baignade") {
+		$('.act4').attr("src","apps/ludosport/img/sport_baignade.png");
+	} else if ("{{act4}}".trim() == "waveski") {
+		$('.act4').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act4}}".trim() == "kayak") {
+		$('.act4').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act4}}".trim() == "pêche") {
+		$('.act4').attr("src","apps/ludosport/img/sport_peche.png");
+	} else if ("{{act4}}".trim() == "randonnée") {
+		$('.act4').attr("src","apps/ludosport/img/sport_randonnee.png");
+	} else if ("{{act4}}".trim() == "promenade en bateau") {
+		$('.act4').attr("src","apps/ludosport/img/sport_promenadeenbateau.png");
+	} else if ("{{act4}}".trim() == "equitation") {
+		$('.act4').attr("src","apps/ludosport/img/sport_equitation.png");
+	} else if ("{{act4}}".trim() == "vtt") {
+		$('.act4').attr("src","apps/ludosport/img/sport_vtt.png");
+	};
+
+	if ("{{act5}}".trim() == "surf") {
+		$('.act5').attr("src","apps/ludosport/img/sport_surf.png");
+	} else if ("{{act5}}".trim() == "plongée") {
+		$('.act5').attr("src","apps/ludosport/img/sport_plongee.png");
+	} else if ("{{act5}}".trim() == "planche à voile") {
+		$('.act5').attr("src","apps/ludosport/img/sport_plancheavoile.png");
+	} else if ("{{act5}}".trim() == "baignade") {
+		$('.act5').attr("src","apps/ludosport/img/sport_baignade.png");
+	} else if ("{{act5}}".trim() == "wave-ski") {
+		$('.act5').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act5}}".trim() == "kayak") {
+		$('.act5').attr("src","apps/ludosport/img/sport_kayak.png");
+	} else if ("{{act5}}".trim() == "pêche") {
+		$('.act5').attr("src","apps/ludosport/img/sport_peche.png");
+	} else if ("{{act5}}".trim() == "randonnée") {
+		$('.act5').attr("src","apps/ludosport/img/sport_randonnee.png");
+	} else if ("{{act5}}".trim() == "promenade en bateau") {
+		$('.act5').attr("src","apps/ludosport/img/sport_promenadeenbateau.png");
+	} else if ("{{act5}}".trim() == "equitation") {
+		$('.act5').attr("src","apps/ludosport/img/sport_equitation.png");
+	} else if ("{{act5}}".trim() == "vtt") {
+		$('.act5').attr("src","apps/ludosport/img/sport_vtt.png");
+	};
+
+	{{/features}}
+
+	var lycee_charts = {};
+    var getValuesAndLabels = function (obj, scheme) {
+        var data = {values: [], labels:[]};
+        Object.keys(obj).forEach(function(key) {
+             var position = key.indexOf(scheme);
+             if (position >= 0) {
+                data.values.push(obj[key]);
+                data.labels.push(key.substr(position + scheme.length).toUpperCase());
+            }
+        });
+        return data;
+    };
+
+    var reOrderValues = function (l1, l2, v2) {
+        var orderedArray = [];
+        l1.forEach(function (label, id) {
+            //find id with same label in l2
+            var i = l2.findIndex(function(element) { return element === label; });
+            orderedArray.push(v2[i]);
+        });
+        return orderedArray;
+    };
+
+    var drawCharts = function (year) {
+        var colors = {
+            rgb:[
+                [45, 64, 89],
+                [61,179,158],
+                [255,201,57],
+                [0, 128, 0],
+                [236,96,95],
+                [153,153,153],
+                [155, 89, 182],
+                [52, 152, 219],
+                [211, 84, 0]
+            ],
+            rgba1: [],
+            rgba2: []
+        };
+        colors.rgb.forEach(function(rgb) {
+            colors.rgba1.push("rgba(" + rgb.join(",") + ",0)");
+            colors.rgba2.push("rgba(" + rgb.join(",") + ",0.9)");
+
+        });
+
+        var lycees = [];
+        {{#features}}
+            lycees.push('{{id}}');
+        {{/features}}
+
+        lycees.forEach(id => {
+						var url = "http://193.48.28.84:8080/geoserver/applications/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=applications%3Asites_etude_rep_amp&maxFeatures=50&outputFormat=application%2Fjson";
+            //var url = "apps/ludosport/customlayer/Sites_etude_rep_amp2.geojson";
+						var idZone = id;
+            $.ajax({
+                url,
+                dataType: "json",
+                success (data) {
+									var stats;
+									var dataFeatures = data.features;
+										dataFeatures.forEach(item => {
+											if (item.properties.id == idZone) {stats = item.properties};
+										});
+                    var id = stats.id;
+
+                    /* chart1 */
+                    var chart1_prop = getValuesAndLabels(stats, "effectif_");
+                    if (lycee_charts["chart1_" + id]) {
+                        //update chart
+                        lycee_charts["chart1_" + id].destroy();
+                    }
+                    //source des données
+										var data = [{
+												label: "Part du conseil",
+												backgroundColor: colors.rgba2,
+												borderColor: colors.rgba1,
+												data: chart1_prop.values
+										}];
+										//create chart
+                    var ctx1 = document.getElementById("chart1_" + id).getContext('2d');
+                    lycee_charts["chart1_" + id] = new Chart(ctx1, {
+                      type: 'doughnut',
+                      data: {
+
+                          datasets: data,
+													labels: ["Etat et administrations publiques","Collectivités territoriales","Associations environnementales", "Usagers de loisirs","Personnels qualifiés","Représentants des professionnels","Autres espaces et AMP à proximité"],
+                      },
+                      options: {
+												tooltips : {
+													enabled : false
+												},
+												plugins: {
+													datalabels: {
+														backgroundColor: function(context) {
+															return context.active ? context.dataset.backgroundColor : 'white';
+														},
+														borderColor: function(context) {
+															return context.dataset.backgroundColor;
+														},
+														borderRadius: function(context) {
+															return context.active ? 0 : 32;
+														},
+														borderWidth: 1,
+														color: function(context) {
+															return context.active ? 'white' : context.dataset.backgroundColor;
+														},
+														font: {
+															weight: 'bold'
+														},
+														formatter: function(value, context) {
+															let sum = 0;
+															let dataArr = context.chart.data.datasets[0].data;
+															dataArr.map(data => {
+																	sum += data;
+															});
+															let percentage = (value*100 / sum).toFixed(2);
+															value = Math.round(value * 100) / 100;
+															return context.active
+																? percentage + '%'
+																: Math.round(value);
+														},
+														offset: 8,
+														textAlign: 'center'
+													}
+												},
+                        responsive: true,
+												aspectRatio : 0.5,
+                        title: {
+                            display: true,
+                            text: 'Sièges du conseil de gestion'
+                        },
+												legend: {
+													align: 'start',
+													position: 'bottom',
+													labels: {
+														boxWidth: 12,
+														padding: 15
+													}
+
+												}
+
+                      }
+                    });
+            }}); /* end Ajax */
+            }); /* end forEach */
+        }; /* end */
+
+    if  (typeof Chart === 'function') {
+            drawCharts(2017);
+    } else {
+            $.get('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js', function() {
+                drawCharts(2017);
+
+            });
+    }
+</script>

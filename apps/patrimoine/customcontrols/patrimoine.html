@@ -1,0 +1,64 @@
+<hr/>
+<div>
+ <h4>Année des édifices :</h4>
+ <p>Modifiez les dates min et max sur le slider</p>
+ <br>
+ </div>
+ <input id="sliderTemp" type="text" data-slider-ticks-labels='["1000","","","","", "1500","","","","","2000"]'/>
+<hr/>
+<div>
+ <h4>Catégorie des édifices :</h4>
+ <p>Choisissez les catégories à visualiser</p>
+ <br>
+ </div>
+ <div class="panel panel-success">
+    <div id=myCheckList class="panel-heading">
+      <div class="row">
+        <div class="col-md-6">
+          <input type="checkbox" id="agriculture" name="agriculture" value="agriculture" checked>
+          <label for="vehicle1">Agriculture</label><br>
+          <input type="checkbox" id="commemoration" name="commemoration" value="commemoration" checked>
+          <label for="vehicle2">Commémoration</label><br>
+          <input type="checkbox" id="commerce" name="commerce" value="commerce" checked>
+          <label for="vehicle3">Commerce</label><br>
+          <input type="checkbox" id="elevage" name="elevage" value="elevage" checked>
+          <label for="vehicle1">Elevage</label><br>
+          <input type="checkbox" id="fortification" name="fortification" value="fortification" checked>
+          <label for="vehicle2">Fortification</label><br>
+          <input type="checkbox" id="four" name="four" value="four" checked>
+          <label for="vehicle3">Four</label><br>
+          <input type="checkbox" id="funeraire" name="funeraire" value="funeraire" checked>
+          <label for="vehicle3">Funéraire</label><br>
+        </div>
+        <div class="col-md-6">
+          <input type="checkbox" id="habitat" name="habitat" value="habitat" checked>
+          <label for="habitat">Habitat</label><br>
+          <input type="checkbox" id="hydraulique" name="hydraulique" value="hydraulique" checked>
+          <label for="vehicle2">Hydraulique</label><br>
+          <input type="checkbox" id="industrie" name="industrie" value="industrie" checked>
+          <label for="vehicle3">Industrie</label><br>
+          <input type="checkbox" id="moulin" name="moulin" value="moulin" checked>
+          <label for="vehicle1">Moulin</label><br>
+          <input type="checkbox" id="public" name="public" value="public" checked>
+          <label for="vehicle2">Public</label><br>
+          <input type="checkbox" id="religion" name="religion" value="religion" checked>
+          <label for="vehicle3">Religion</label><br>
+          <input type="checkbox" id="transport" name="transport" value="transport" checked>
+          <label for="vehicle3">Transport</label><br>
+        </div>
+      </div>
+   </div>
+ </div>
+<style>
+  #sliderTemporel .slider-selection {
+	   background: #ff2a00 !important;
+   }
+  #sliderTemporel .slider-handle {
+     background: #ff2a00 !important;
+   }
+  #sliderTemporel .slider-tick.round.in-selection {
+     background: #ff2a00;
+     background-image: none;
+     -webkit-box-shadow: inset 0 0px 0 rgba(0, 0, 0, 0); }
+
+</style>
